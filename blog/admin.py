@@ -13,5 +13,5 @@ class PostAdmin(admin.ModelAdmin):
 #   raw_id_fields = 'author'
     date_hierarchy = 'publish'
     prepopulated_fields = {'slug': ['title']}
-    list_editable = ['publish']
+    list_editable = ['status']
 #    list_display_links = 'author'
