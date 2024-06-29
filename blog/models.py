@@ -43,3 +43,30 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+
+class Ticket(models.Model):
+    message = models.TextField()
+    name = models.CharField(max_length=250)
+    email = models.EmailField()
+    phone = models.CharField(max_length=11)
+    subject = models.CharField(max_length=250)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

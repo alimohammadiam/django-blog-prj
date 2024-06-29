@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
-from .models import Post
+from .models import *
+from .forms import *
 
 # Create your views here.
 
@@ -29,6 +30,22 @@ def posts_detail(request, id):
     return render(request, 'blog/detail.html', context)
 
 
+def ticket(request):
+    if request.method == 'POST':
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            ticket_obj = Ticket.objects.create()
+            cd = form.cleaned_data
+            ticket_obj.message = cd['message']
+            ticket_obj.name = cd['name']
+            ticket_obj.email = cd['email']
+            ticket_obj.phone = cd['phone']
+            ticket_obj.subject = cd['subject']
+            ticket_obj.save()
+            return redirect('blog:ticket')
+    else:
+        form = TicketForm()
+    return render(request, 'forms/ticket.html', {'form': form})
 
 
 
