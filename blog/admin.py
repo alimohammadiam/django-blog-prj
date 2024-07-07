@@ -3,6 +3,10 @@ from .models import *
 
 # Register your models here.
 
+admin.sites.AdminSite.site_header = 'پنل مدیریت جنگو'
+admin.sites.AdminSite.site_title = 'پنل'
+admin.sites.AdminSite.index_title = 'پنل مدیریت'
+
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
