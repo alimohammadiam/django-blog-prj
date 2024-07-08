@@ -10,6 +10,6 @@
         <p> {{ post.description | truncatewords:4 }}</p>
     {% endfor %}
 
-    {% include 'partials/pagination.html' with page=posts %}
+    {% include 'partials/pagination.html' with page=page_obj %}
 
 {% endblock %}

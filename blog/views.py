@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic import ListView, DetailView
 from .models import *
 from .forms import *
 
@@ -11,33 +12,43 @@ def index(request):
     return HttpResponse('index')
 
 
-def posts_list(request):
-    posts = Post.published.all()
-    paginator = Paginator(posts, 3)
-    page_number = request.GET.get('page', 1)
-    try:
-        posts = paginator.page(page_number)
-    except EmptyPage:
-        posts = paginator.page(paginator.num_pages)
-    except PageNotAnInteger:
-        posts = paginator.page(1)
+# def posts_list(request):
+#     posts = Post.published.all()
+#     paginator = Paginator(posts, 3)
+#     page_number = request.GET.get('page', 1)
+#     try:
+#         posts = paginator.page(page_number)
+#     except EmptyPage:
+#         posts = paginator.page(paginator.num_pages)
+#     except PageNotAnInteger:
+#         posts = paginator.page(1)
+#
+#     context = {
+#         'posts': posts,
+#     }
+#     return render(request, 'blog/list.html', context)
 
-    context = {
-        'posts': posts,
-    }
-    return render(request, 'blog/list.html', context)
+class PostListView(ListView):
+    queryset = Post.published.all()
+    context_object_name = 'posts'
+    paginate_by = 3
+    template_name = 'blog/list.html'
 
 
-def posts_detail(request, id):
-    post = get_object_or_404(Post, id=id, status=Post.Status.PUBLISHED)
-    # try:
-    #     post = Post.published.get(id=id)
-    # except:
-    #     raise Http404('Not Post Found !')
-    context = {
-        "post": post,
-    }
-    return render(request, 'blog/detail.html', context)
+# def posts_detail(request, id):
+#     post = get_object_or_404(Post, id=id, status=Post.Status.PUBLISHED)
+#     # try:
+#     #     post = Post.published.get(id=id)
+#     # except:
+#     #     raise Http404('Not Post Found !')
+#     context = {
+#         "post": post,
+#     }
+#     return render(request, 'blog/detail.html', context)
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'blog/detail.html'
 
 
 def ticket(request):
