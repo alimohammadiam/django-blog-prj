@@ -5,7 +5,7 @@
 
     {% for post in posts %}
         <h2>
-        <a href="{% url 'blog:posts_detail' post.id %}">{{ post.title }}</a>
+        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
         </h2>
         <p> {{ post.description | truncatewords:4 }}</p>
     {% endfor %}
