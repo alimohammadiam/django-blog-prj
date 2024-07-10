@@ -1,4 +1,5 @@
 from django import forms
+from .models import Comment
 
 
 class TicketForm(forms.Form):
@@ -20,4 +21,18 @@ class TicketForm(forms.Form):
                 raise forms.ValidationError('شماره تلفن باید عدد باشد!')
             else:
                 return phone
+
+
+class CommentForm(forms.ModelForm):
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if name:
+            if len(name) < 3:
+                raise forms.ValidationError('نام کوتاه است1')
+            else:
+                return name
+
+    class Meta:
+        model = Comment
+        fields = ['name', 'body']
 

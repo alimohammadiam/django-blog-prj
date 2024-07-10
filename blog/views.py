@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView
+from django.views.decorators.http import require_POST
 from .models import *
 from .forms import *
 
@@ -12,43 +13,48 @@ def index(request):
     return HttpResponse('index')
 
 
-# def posts_list(request):
-#     posts = Post.published.all()
-#     paginator = Paginator(posts, 3)
-#     page_number = request.GET.get('page', 1)
-#     try:
-#         posts = paginator.page(page_number)
-#     except EmptyPage:
-#         posts = paginator.page(paginator.num_pages)
-#     except PageNotAnInteger:
-#         posts = paginator.page(1)
-#
-#     context = {
-#         'posts': posts,
-#     }
-#     return render(request, 'blog/list.html', context)
+def posts_list(request):
+    posts = Post.published.all()
+    paginator = Paginator(posts, 3)
+    page_number = request.GET.get('page', 1)
+    try:
+        posts = paginator.page(page_number)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
 
-class PostListView(ListView):
-    queryset = Post.published.all()
-    context_object_name = 'posts'
-    paginate_by = 3
-    template_name = 'blog/list.html'
+    context = {
+        'posts': posts,
+    }
+    return render(request, 'blog/list.html', context)
+
+# class PostListView(ListView):
+#     queryset = Post.published.all()
+#     context_object_name = 'posts'
+#     paginate_by = 2
+#     template_name = 'blog/list.html'
 
 
-# def posts_detail(request, id):
-#     post = get_object_or_404(Post, id=id, status=Post.Status.PUBLISHED)
-#     # try:
-#     #     post = Post.published.get(id=id)
-#     # except:
-#     #     raise Http404('Not Post Found !')
-#     context = {
-#         "post": post,
-#     }
-#     return render(request, 'blog/detail.html', context)
+def posts_detail(request, pk):
+    post = get_object_or_404(Post, id=pk, status=Post.Status.PUBLISHED)
+    comments = post.comments.filter(active=True)
+    form = CommentForm()
+    # try:
+    #     post = Post.published.get(id=id)
+    # except:
+    #     raise Http404('Not Post Found !')
+    ##
+    context = {
+        "post": post,
+        "form": form,
+        "comments": comments
+    }
+    return render(request, 'blog/detail.html', context)
 
-class PostDetailView(DetailView):
-    model = Post
-    template_name = 'blog/detail.html'
+# class PostDetailView(DetailView):
+#     model = Post
+#     template_name = 'blog/detail.html'
 
 
 def ticket(request):
@@ -71,6 +77,28 @@ def ticket(request):
     else:
         form = TicketForm()
     return render(request, 'forms/ticket.html', {'form': form})
+
+
+@require_POST
+def post_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
+    comment = None
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+    context = {
+        'post': post,
+        'form': form,
+        'comment': comment
+    }
+    return render(request, 'forms/comment.html', context)
+
+
+
+
+
 
 
 
