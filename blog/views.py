@@ -10,7 +10,7 @@ from .forms import *
 
 
 def index(request):
-    return HttpResponse('index')
+    return render(request, 'blog/index.html')
 
 
 def posts_list(request):
