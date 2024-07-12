@@ -19,4 +19,16 @@
         <a href="{{ post.get_absolute_url }}">{{ post.title }}: with {{ post.comment_count }} comments</a>
 
     {% endfor %}
+
+    <hr>
+    {% max_reading_time as max_time %}
+    {% for max in max_time %}
+        <p><a href="{{ max.get_absolute_url }}">{{ max.title }}:{{ max.reading_time }}</a>بیشترین زمان مطالعه: </p>
+    {% endfor %}
+
+    <hr>
+    {% min_reding_time as min_time%}
+    {% for min in min_time %}
+        <p><a href="{{ min.get_absolute_url }}">{{ min.title }}:{{ min.reading_time }}</a> کمترین زمان مطالعه: </p>
+    {% endfor %}
 {% endblock %}
