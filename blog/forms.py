@@ -1,5 +1,5 @@
 from django import forms
-from .models import Comment
+from .models import Comment, Post, User
 
 
 class TicketForm(forms.Form):
@@ -28,11 +28,47 @@ class CommentForm(forms.ModelForm):
         name = self.cleaned_data['name']
         if name:
             if len(name) < 3:
-                raise forms.ValidationError('نام کوتاه است1')
+                raise forms.ValidationError('نام کوتاه است !')
             else:
                 return name
 
     class Meta:
         model = Comment
         fields = ['name', 'body']
+
+
+class PostForm(forms.Form):
+    author = forms.CharField(required=True, label='نام کاربری')
+    title = forms.CharField(max_length=250, required=True, label='موضوع')
+    description = forms.CharField(widget=forms.Textarea, required=True, label='متن')
+    # reading_time = forms.DateTimeField(label='زمان مطالعه')
+
+    def clean_title(self):
+        title = self.cleaned_data['title']
+        if title:
+            if len(title) > 250:
+                raise forms.ValidationError('موضوع بسیار طولانی !')
+            else:
+                return title
+
+    def clean_description(self):
+        description = self.cleaned_data['description']
+        if description:
+            if len(description) < 250:
+                raise forms.ValidationError('متن پست بسیار کوتاه است !')
+            else:
+                return description
+
+    # def clean_author(self):
+    #     author = self.cleaned_data['author']
+    #     exists = User.objects.filter(username='author').exists()
+    #     if exists:
+    #         user = User.objects.get(username=author)
+    #         return user
+    #     else:
+    #         raise forms.ValidationError('نام کاربری اشتباه است !')
+
+
+
+
 

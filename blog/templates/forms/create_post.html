@@ -1,0 +1,20 @@
+{% extends 'parent/base.html' %}
+{% block title %}create post{% endblock %}
+
+{% block content %}
+
+
+    {% if comment %}
+        پست اضافه شد !
+        <a href="{% url 'blog:create_blog' %}">بازگشت</a>
+    {% else %}
+
+    <form method="post" >
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="افزودن کامنت">
+    </form>
+    {% endif %}
+
+
+{% endblock %}

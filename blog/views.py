@@ -96,6 +96,25 @@ def post_comment(request, post_id):
     return render(request, 'forms/comment.html', context)
 
 
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user_exist = User.objects.filter(username=cd['author']).exists()
+            if user_exist:
+                Post.object.create(author=User.objects.get(username="AliAdmin"), title=cd['title'],
+                                   description=cd['description'], publish=timezone.now())
+                return redirect('blog:create_post')
+            else:
+                raise Http404('نام کاربری نامعبر است !')
+    else:
+        form = PostForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'forms/create_post.html', context)
 
 
 
