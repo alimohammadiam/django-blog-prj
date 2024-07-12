@@ -1,5 +1,5 @@
 from django import template
-from ..models import Post, Comment
+from ..models import Post, Comment, User
 from django.db.models import Count, Max, Min, Sum
 from markdown import markdown
 from django.utils.safestring import mark_safe
@@ -36,6 +36,12 @@ def max_reading_time():
 @register.simple_tag()
 def min_reding_time():
     return Post.published.annotate(min_time=Min('reading_time')).order_by('min_time')[:1]
+    # return Post.published.aggregate(Min('reading_time'))
+
+
+@register.simple_tag()
+def most_popular_user(count=3):
+    return User.objects.annotate(max_posts=Count('user_posts')).order_by('-max_posts')[:count]
 
 
 # inclusion tags

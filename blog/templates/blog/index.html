@@ -31,4 +31,11 @@
     {% for min in min_time %}
         <p><a href="{{ min.get_absolute_url }}">{{ min.title }}:{{ min.reading_time }}</a> کمترین زمان مطالعه: </p>
     {% endfor %}
+
+    <hr>
+    <h3>فعال ترین نویسنده ها</h3>
+    {% most_popular_user as pop_user %}
+    {% for p_user in pop_user %}
+        <p><a href="{{ p_user.get_absolute_url }}">{{ p_user.username }}:{{ p_user.max_posts }}</a></p>
+    {% endfor %}
 {% endblock %}
