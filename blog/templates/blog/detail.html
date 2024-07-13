@@ -5,7 +5,7 @@
 {% block content %}
     <h1>post detail</h1>
     <h2>{{ post.title }} </h2>
-    <p>{{ post.description | markdown }}</p>
+    <p>{{ post.description | markdown|  filtering }}</p>
     <hr>
     <p><b>by ({{ post.author }})  | </b>{{ post.publish }} </p>
     <hr>

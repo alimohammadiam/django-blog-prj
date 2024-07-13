@@ -59,5 +59,12 @@ def to_markdown(text):
     return mark_safe(markdown(text))
 
 
-
-
+@register.filter()
+def filtering(text: str, word: str = 'khar'):
+    filter_text = ''
+    text = text.split(' ')
+    if word in text:
+        text[text.index(word)] = '****'
+        for w in text:
+            filter_text += (w + ' ')
+    return filter_text
