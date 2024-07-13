@@ -69,6 +69,10 @@ class PostForm(forms.Form):
     #         raise forms.ValidationError('نام کاربری اشتباه است !')
 
 
+class SearchForm(forms.Form):
+    query = forms.CharField()
+
+
 
 
 
