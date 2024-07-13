@@ -61,6 +61,7 @@ def to_markdown(text):
 
 @register.filter()
 def filtering(text: str, word: str = 'khar'):
+    """باید دوباره بنویسم فقط کلمه اول رو فقط فیلتر میکنه و یکار کنم که لیستی از کلمات که قراره فیلتر شوند رو بگیره !"""
     filter_text = ''
     text = text.split(' ')
     if word in text:
