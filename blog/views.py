@@ -4,6 +4,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
 from django.db.models import Q
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from .models import *
 from .forms import *
 
@@ -125,7 +126,10 @@ def post_search(request):
         form = SearchForm(data=request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            results = Post.published.filter(Q(title__icontains=query) | Q(description__icontains=query))
+            search_query = SearchQuery(query)
+            search_vector = SearchVector('title', 'description')
+            results = Post.published.annotate(search=search_vector, rank=SearchRank(search_vector, search_query)).\
+                filter(search=search_query).order_by('-rank')
     context = {
         'query': query,
         'results': results
