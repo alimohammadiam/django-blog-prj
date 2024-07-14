@@ -5,6 +5,13 @@
 {% block content %}
     <h1>post detail</h1>
     <h2>{{ post.title }} </h2>
+    <hr>
+    <div>
+        {% for img in post.images.all %}
+            <img width="300px" height="200px" src="{{ img.image_file.url }}" alt="{{ img.title }}">
+        {% endfor %}
+    </div>
+    <hr>
     <p>{{ post.description | markdown }}</p>
     <hr>
     <p><b>by ({{ post.author }})  | </b>{{ post.publish }} </p>

@@ -86,7 +86,23 @@ class Comment(models.Model):
         return f'{self.name}: {self.post}'
 
 
+class Image(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images', verbose_name='تصویر')
+    image_file = models.ImageField(upload_to="post_images/")
+    title = models.CharField(max_length=250, null=True, blank=True, verbose_name='عنوان')
+    description = models.TextField(null=True, blank=True, verbose_name='توضیحات')
+    created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['created']
+        indexes = [
+            models.Index(fields=['created'])
+        ]
+        verbose_name = 'تصویر'
+        verbose_name_plural = 'تصویر ها '
+
+    def __str__(self):
+        return self.title
 
 
 
