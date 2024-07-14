@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django_resized import ResizedImageField
+from django.template.defaultfilters import slugify
 
 
 # Manager
@@ -50,6 +51,10 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:posts_detail', args=[self.id])
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
 
 class Ticket(models.Model):
@@ -102,8 +107,11 @@ class Image(models.Model):
         verbose_name = 'تصویر'
         verbose_name_plural = 'تصویر ها '
 
-    def __str__(self):
-        return self.title
+
+#    # یه باگ داره که وقتب برای تصاویر title ننویسیم ارور میده
+    # def __str__(self):
+    #     if self.title:
+    #         return self.title
 
 
 

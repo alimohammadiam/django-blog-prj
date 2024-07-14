@@ -3,18 +3,26 @@
 
 {% block content %}
 
-
-    {% if comment %}
-        پست اضافه شد !
-        <a href="{% url 'blog:create_blog' %}">بازگشت</a>
-    {% else %}
-
-    <form method="post" >
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="افزودن کامنت">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="ثبت">
     </form>
+
+    {% if form.errors %}
+        لطفا خطاهای زیر را اصلاح کنید !
+        <br>
+        {% for field in form %}
+            {% if field.errors %}
+                {% for error in field.errors %}
+                    {{ field.label }}: {{ error }}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
     {% endif %}
 
+    {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
 
 {% endblock %}

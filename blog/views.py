@@ -98,25 +98,43 @@ def post_comment(request, post_id):
     return render(request, 'forms/comment.html', context)
 
 
+# def create_post(request):
+#     if request.method == 'POST':
+#         form = PostForm(request.POST)
+#         if form.is_valid():
+#             cd = form.cleaned_data
+#             user_exist = User.objects.filter(username=cd['author']).exists()
+#             if user_exist:
+#                 Post.object.create(author=User.objects.get(username="AliAdmin"), title=cd['title'],
+#                                    description=cd['description'], publish=timezone.now())
+#                 return redirect('blog:create_post')
+#             else:
+#                 raise Http404('نام کاربری نامعبر است !')
+#     else:
+#         form = PostForm()
+#
+#     context = {
+#         'form': form
+#     }
+#     return render(request, 'forms/create_post.html', context)
+
+
 def create_post(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            cd = form.cleaned_data
-            user_exist = User.objects.filter(username=cd['author']).exists()
-            if user_exist:
-                Post.object.create(author=User.objects.get(username="AliAdmin"), title=cd['title'],
-                                   description=cd['description'], publish=timezone.now())
-                return redirect('blog:create_post')
-            else:
-                raise Http404('نام کاربری نامعبر است !')
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            img1 = Image.objects.create(image_file=form.cleaned_data['image1'], post=post)
+            post.images.add(img1)
+            img2 = Image.objects.create(image_file=form.cleaned_data['image2'], post=post)
+            post.images.add(img2)
+
+            return redirect('blog:profile')
     else:
         form = PostForm()
-
-    context = {
-        'form': form
-    }
-    return render(request, 'forms/create_post.html', context)
+    return render(request, 'forms/create_post.html', {'form': form})
 
 
 def post_search(request):

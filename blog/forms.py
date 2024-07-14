@@ -37,27 +37,27 @@ class CommentForm(forms.ModelForm):
         fields = ['name', 'body']
 
 
-class PostForm(forms.Form):
-    author = forms.CharField(required=True, label='نام کاربری')
-    title = forms.CharField(max_length=250, required=True, label='موضوع')
-    description = forms.CharField(widget=forms.Textarea, required=True, label='متن')
-    # reading_time = forms.DateTimeField(label='زمان مطالعه')
-
-    def clean_title(self):
-        title = self.cleaned_data['title']
-        if title:
-            if len(title) > 250:
-                raise forms.ValidationError('موضوع بسیار طولانی !')
-            else:
-                return title
-
-    def clean_description(self):
-        description = self.cleaned_data['description']
-        if description:
-            if len(description) < 250:
-                raise forms.ValidationError('متن پست بسیار کوتاه است !')
-            else:
-                return description
+# class PostForm(forms.Form):
+#     author = forms.CharField(required=True, label='نام کاربری')
+#     title = forms.CharField(max_length=250, required=True, label='موضوع')
+#     description = forms.CharField(widget=forms.Textarea, required=True, label='متن')
+#     # reading_time = forms.DateTimeField(label='زمان مطالعه')
+#
+#     def clean_title(self):
+#         title = self.cleaned_data['title']
+#         if title:
+#             if len(title) > 250:
+#                 raise forms.ValidationError('موضوع بسیار طولانی !')
+#             else:
+#                 return title
+#
+#     def clean_description(self):
+#         description = self.cleaned_data['description']
+#         if description:
+#             if len(description) < 250:
+#                 raise forms.ValidationError('متن پست بسیار کوتاه است !')
+#             else:
+#                 return description
 
     # def clean_author(self):
     #     author = self.cleaned_data['author']
@@ -67,6 +67,16 @@ class PostForm(forms.Form):
     #         return user
     #     else:
     #         raise forms.ValidationError('نام کاربری اشتباه است !')
+    #
+
+
+class PostForm(forms.ModelForm):
+    image1 = forms.ImageField(label='تصویر اول')
+    image2 = forms.ImageField(label='تصویر دوم')
+
+    class Meta:
+        model = Post
+        fields = ['title', 'description', 'reading_time']
 
 
 class SearchForm(forms.Form):
