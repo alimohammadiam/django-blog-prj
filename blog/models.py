@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django_resized import ResizedImageField
 
 
 # Manager
@@ -88,7 +89,7 @@ class Comment(models.Model):
 
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images', verbose_name='تصویر')
-    image_file = models.ImageField(upload_to="post_images/")
+    image_file = ResizedImageField(upload_to="post_images/", size=[500, 500], quality=75, crop=['middle', 'center'])
     title = models.CharField(max_length=250, null=True, blank=True, verbose_name='عنوان')
     description = models.TextField(null=True, blank=True, verbose_name='توضیحات')
     created = models.DateTimeField(auto_now_add=True)
