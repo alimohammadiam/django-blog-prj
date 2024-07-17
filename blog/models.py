@@ -105,6 +105,11 @@ class Image(models.Model):
     description = models.TextField(null=True, blank=True, verbose_name='توضیحات')
     created = models.DateTimeField(auto_now_add=True)
 
+    def delete(self, *args, **kwargs):
+        storage, path = self.image_file.storage, self.image_file.path
+        storage.delete(path)
+        super().delete(*args, **kwargs)
+
     class Meta:
         ordering = ['created']
         indexes = [

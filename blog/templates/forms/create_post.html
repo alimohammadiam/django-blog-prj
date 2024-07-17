@@ -6,6 +6,14 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+        {% if post %}
+            {% for img in post.images.all %}
+                <img width="350px" height="250px" src="{{ img.image_file.url }}" alt="{{ img.title }}">
+                <a href="{% url 'blog:delete_image' img.id %}">حذف تصویر</a>
+            {% endfor %}
+        {% endif %}
+        <br>
+        <hr>
         <input type="submit" value="ثبت">
     </form>
 
