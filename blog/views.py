@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.auth import authenticate, login
 from .models import *
 from .forms import *
 
@@ -195,6 +196,41 @@ def edit_post(request, post_id):
         'post': post,
     }
     return render(request, 'forms/create_post.html', context)
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(request, username=cd['user_name'], password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('blog:profile')
+                else:
+                    return HttpResponse('your account is disable')
+            else:
+                return HttpResponse('your account not logged in')
+    else:
+        form = LoginForm()
+    return render(request, 'forms/login.html', {'form': form})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
