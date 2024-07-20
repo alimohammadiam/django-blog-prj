@@ -17,5 +17,6 @@ urlpatterns = [
     path('profile/delete_post/<post_id>', views.delete_post, name='delete_post'),
     path('profile/edit_post/<post_id>', views.edit_post, name='edit_post'),
     path('profile/delete_image/<image_id>', views.delete_image, name='delete_image'),
-    path('login', views.user_login, name='login')
+    path('login', views.user_login, name='login'),
+    path('logout', views.log_out, name='logout'),
 ]

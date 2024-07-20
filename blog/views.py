@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .models import *
 from .forms import *
 
@@ -214,10 +214,12 @@ def user_login(request):
                 return HttpResponse('your account not logged in')
     else:
         form = LoginForm()
-    return render(request, 'forms/login.html', {'form': form})
+    return render(request, 'registration/login.html', {'form': form})
 
 
-
+def log_out(request):
+    logout(request)
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 
