@@ -83,9 +83,9 @@ class SearchForm(forms.Form):
     query = forms.CharField()
 
 
-class LoginForm(forms.Form):
-    user_name = forms.CharField(max_length=250, required=True)
-    password = forms.CharField(max_length=250, required=True, widget=forms.PasswordInput)
+# class LoginForm(forms.Form):
+#     user_name = forms.CharField(max_length=250, required=True)
+#     password = forms.CharField(max_length=250, required=True, widget=forms.PasswordInput)
 
 
 

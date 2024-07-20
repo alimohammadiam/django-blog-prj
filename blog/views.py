@@ -6,6 +6,7 @@ from django.views.decorators.http import require_POST
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 
@@ -120,6 +121,7 @@ def post_comment(request, post_id):
 #     return render(request, 'forms/create_post.html', context)
 
 
+@login_required
 def create_post(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
@@ -156,6 +158,7 @@ def post_search(request):
     return render(request, 'blog/search.html', context)
 
 
+@login_required
 def profile(request):
     user = request.user
     posts = Post.published.filter(author=user)
@@ -171,12 +174,14 @@ def delete_post(request, post_id):
     return render(request, 'forms/delete_post.html', {'post': post})
 
 
+@login_required
 def delete_image(request, image_id):
     image = get_object_or_404(Image, id=image_id)
     image.delete()
     return redirect('blog:profile')
 
 
+@login_required
 def edit_post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
@@ -198,28 +203,28 @@ def edit_post(request, post_id):
     return render(request, 'forms/create_post.html', context)
 
 
-def user_login(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(request, username=cd['user_name'], password=cd['password'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return redirect('blog:profile')
-                else:
-                    return HttpResponse('your account is disable')
-            else:
-                return HttpResponse('your account not logged in')
-    else:
-        form = LoginForm()
-    return render(request, 'registration/login.html', {'form': form})
+# def user_login(request):
+#     if request.method == 'POST':
+#         form = LoginForm(request.POST)
+#         if form.is_valid():
+#             cd = form.cleaned_data
+#             user = authenticate(request, username=cd['user_name'], password=cd['password'])
+#             if user is not None:
+#                 if user.is_active:
+#                     login(request, user)
+#                     return redirect('blog:profile')
+#                 else:
+#                     return HttpResponse('your account is disable')
+#             else:
+#                 return HttpResponse('your account not logged in')
+#     else:
+#         form = LoginForm()
+#     return render(request, 'registration/login.html', {'form': form})
 
 
-def log_out(request):
-    logout(request)
-    return redirect(request.META.get('HTTP_REFERER'))
+# def log_out(request):
+#     logout(request)
+#     return redirect(request.META.get('HTTP_REFERER'))
 
 
 
