@@ -125,6 +125,20 @@ class Image(models.Model):
     #         return self.title
 
 
+class Account(models.Model):
+    user = models.OneToOneField(User, related_name='account', on_delete=models.CASCADE)
+    date_of_birth = models.DateField(blank=True, null=True, verbose_name='تاریخ تولد')
+    bio = models.TextField(blank=True, null=True, verbose_name='بایو')
+    photo = ResizedImageField(upload_to="account_images/", size=[500, 500], quality=60, crop=['middle', 'center'],
+                              blank=True, null=True, verbose_name='عکس')
+    job = models.CharField(max_length=250, blank=True, null=True, verbose_name='شغل')
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = 'اکانت'
+        verbose_name_plural = 'اکانت ها'
 
 
 
