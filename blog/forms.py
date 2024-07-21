@@ -88,8 +88,19 @@ class SearchForm(forms.Form):
 #     password = forms.CharField(max_length=250, required=True, widget=forms.PasswordInput)
 
 
+class UserRegisterForm(forms.ModelForm):
+    password = forms.CharField(max_length=20, widget=forms.PasswordInput, label='password')
+    password2 = forms.CharField(max_length=20, widget=forms.PasswordInput, label='repeat password')
 
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
 
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd['password'] != cd['password2']:
+            raise forms.ValidationError('پسورد ها مطابقت ندارد!')
+        return cd['password2']
 
 
 

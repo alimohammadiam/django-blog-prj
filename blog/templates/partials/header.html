@@ -7,6 +7,9 @@
     <a href="#">{{ request.user.first_name | default:request.user.username }}</a>
 {% else %}
     <a href="{% url 'blog:login' %}">ورود</a>
+    <br>
+    <br>
+    <a href="{% url 'blog:register' %}">ثبت نام</a>
 {% endif %}
 
 
