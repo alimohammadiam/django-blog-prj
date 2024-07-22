@@ -17,8 +17,11 @@ def index(request):
     return render(request, 'blog/index.html')
 
 
-def posts_list(request):
-    posts = Post.published.all()
+def posts_list(request, category=None):
+    if category is not None:
+        posts = Post.published.filter(category=category)
+    else:
+        posts = Post.published.all()
     paginator = Paginator(posts, 3)
     page_number = request.GET.get('page', 1)
     try:
@@ -30,6 +33,7 @@ def posts_list(request):
 
     context = {
         'posts': posts,
+        'category': category
     }
     return render(request, 'blog/list.html', context)
 
