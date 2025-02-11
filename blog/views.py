@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.utils.html import escape
 from .models import *
 from .forms import *
 
@@ -150,11 +151,9 @@ def post_search(request):
     if 'query' in request.GET:
         form = SearchForm(data=request.GET)
         if form.is_valid():
-            query = form.cleaned_data['query']
-            search_query = SearchQuery(query)
-            search_vector = SearchVector('title', 'description')
-            results = Post.published.annotate(search=search_vector, rank=SearchRank(search_vector, search_query)).\
-                filter(search=search_query).order_by('-rank')
+            query = escape(form.cleaned_data['query'])
+            results = Post.published.filter(Q(description__icontains=query) | Q(title__icontains=query))
+
     context = {
         'query': query,
         'results': results

@@ -129,7 +129,7 @@ class Image(models.Model):
         verbose_name_plural = 'تصویر ها '
 
 
-#    # یه باگ داره که وقتب برای تصاویر title ننویسیم ارور میده
+#    # یه باگ داره که وقتی برای تصاویر title ننویسیم ارور میده
     # def __str__(self):
     #     if self.title:
     #         return self.title
@@ -149,14 +149,3 @@ class Account(models.Model):
     class Meta:
         verbose_name = 'اکانت'
         verbose_name_plural = 'اکانت ها'
-
-
-
-
-
-
-
-
-
-
-
