@@ -47,7 +47,6 @@ NewProjectBlog یک سیستم مدیریت محتوای جامع است که ب
 - **HTML5** - ساختار صفحات
 - **CSS3** - استایل‌دهی
 - **JavaScript** - تعاملات frontend
-- **Bootstrap** - چارچوب CSS (فرضی)
 
 ### Database
 - **SQLite3** - پایگاه داده توسعه
