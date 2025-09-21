@@ -66,7 +66,7 @@ NewProjectBlog یک سیستم مدیریت محتوای جامع است که ب
 
 1. **کلون کردن پروژه**
    ```bash
-   git clone https://github.com/your-username/NewProjectBlog.git
+   git clone https://github.com/alimohammadiam/NewProjectBlog.git
    cd NewProjectBlog
    ```
 
@@ -173,7 +173,7 @@ NewProjectBlog یک سیستم مدیریت محتوای جامع است که ب
 
 
 ### ⚙️ پیکربندی
-####تنظیمات اصلی (settings.py)
+###تنظیمات اصلی (settings.py)
 
 ```python
   # پایگاه داده
